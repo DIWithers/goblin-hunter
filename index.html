@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Goblin Hunter!!</title>
+</head>
+<body>
+<!-- <div class="score">
+	<h3>Current Score: </h3><script type="text/javascript"> document.write(currentScore);</script>
+	<h4>High Score: </h4><script type ="text/javascript"> document.write(highScore);</script>
+</div> -->
+<div class="score">
+	<h2>Current Score: </h2><div id="currentScore"></div>
+	<h3>High Score: </h3><div id="highScore"></div>
+</div>
+<script type="text/javascript">
+
+
+// Create a canvas tag with javascript
+var canvas = document.createElement('canvas');
+// Create a context for javascript to play inside of
+var context = canvas.getContext('2d');
+// Give the canvas tag some substance.
+canvas.width = 518;
+canvas.height = 474;
+// console.dir(canvas);
+// Put the canvas element in the document
+document.body.appendChild(canvas);
+var bgImage = new Image();
+bgImage.src = "background2.jpg";
+
+// OUR STUFF WILL GO 
+
+var hero = new Image();
+hero.src = "hero.png";
+var heroLocation = {
+	x: 100,
+	y: 100
+}
+
+var goblin = new Image();
+goblin.src = "monster.png";
+var goblinLocation = {
+	x: 150,
+	y: 100
+}
+
+var goblin2 = new Image();
+goblin2.src = "monster2.png";
+var goblin2Location = {
+	x: 200,
+	y: 200
+}
+
+var mine = new Image();
+mine.src = "mine.png";
+var mineLocation = {
+	x: 400,
+	y: 400,
+}
+var mine2 = new Image();
+mine2.src = "mine.png";
+var mine2Location = {
+	x: 300,
+	y: 300,
+}
+var mine3 = new Image();
+mine3.src = "mine.png";
+var mine3Location = {
+	x: 50,
+	y: 50,
+}
+// This array will hold the keycodes that are currently pressed down
+var keysDown = [];
+
+
+addEventListener('keydown', function(event) {
+	// console.log(event.keyCode);
+	keysDown[event.keyCode] = true;
+});
+
+addEventListener('keyup', function(event){
+	delete keysDown[event.keyCode];
+});
+	function update() {
+// Make the hero move
+	if (39 in keysDown) {
+		// Move him Right
+		heroLocation.x += 10;
+	}
+	if (37 in keysDown) {
+		// Move him Left
+		heroLocation.x -= 10;
+	}
+	if (38 in keysDown) {
+		// Move him Up
+		heroLocation.y -= 10;
+	}
+	if (40 in keysDown) {
+		// Move him Down
+		heroLocation.y += 10;
+	}
+
+
+// Left - 37
+// Up - 38
+// Right - 39
+// Down - 40
+
+
+// If the hero runs into the goblin, do x
+if ((heroLocation.x <= (goblinLocation.x + 32))
+	&& (heroLocation.y <= (goblinLocation.y + 32))
+	&& (goblinLocation.x <= (heroLocation.x + 32))
+	&& (goblinLocation.y <= (heroLocation.y + 32))
+	){
+		reset();
+		scorePoint();
+	}
+else if ((heroLocation.x <= (goblin2Location.x + 32))
+	&& (heroLocation.y <= (goblin2Location.y + 32))
+	&& (goblin2Location.x <= (heroLocation.x + 32))
+	&& (goblin2Location.y <= (heroLocation.y + 32))
+	){
+		reset2();
+		scorePoint();
+	}
+else if ((heroLocation.x <= (mineLocation.x + 32))
+	&& (heroLocation.y <= (mineLocation.y + 32))
+	&& (mineLocation.x <= (heroLocation.x + 32))
+	&& (mineLocation.y <= (heroLocation.y + 32))
+	){
+		reset3();
+		minusPoint();
+	}
+else if ((heroLocation.x <= (mine2Location.x + 32))
+	&& (heroLocation.y <= (mine2Location.y + 32))
+	&& (mine2Location.x <= (heroLocation.x + 32))
+	&& (mine2Location.y <= (heroLocation.y + 32))
+	){
+		reset4();
+		minusPoint();
+	}
+else if ((heroLocation.x <= (mine3Location.x + 32))
+	&& (heroLocation.y <= (mine3Location.y + 32))
+	&& (mine3Location.x <= (heroLocation.x + 32))
+	&& (mine3Location.y <= (heroLocation.y + 32))
+	){
+		reset5();
+		minusPoint();
+	}
+	
+	
+
+if (heroLocation.x > 518) { 
+	wrapLeft();
+}
+
+if (heroLocation.x < -32) {
+	wrapRight();
+}
+if (heroLocation.y > 474) { 
+	wrapUp();
+}
+if (heroLocation.y < -32) {
+	wrapDown();
+}
+}	//end up update()
+function wrapLeft() {
+	heroLocation.x = 0;
+}
+function wrapRight() {
+	heroLocation.x = 512;
+}
+function wrapUp() {
+	heroLocation.y = 0;
+}
+function wrapDown() {
+	heroLocation.y = 480;
+}
+
+function reset() { //Goblin 1 moves
+	goblinLocation.x = Math.random() * 510;
+	goblinLocation.y = Math.random() * 470;
+}
+function reset2() { //Goblin 2 moves
+	goblin2Location.x = Math.random() * 510;
+	goblin2Location.y = Math.random() * 470;
+}
+function reset3() { //Mine 1 moves
+	mineLocation.x = Math.random() * 510;
+	mineLocation.y = Math.random() * 470;
+}
+function reset4() { //Mine 2 moves
+	mine2Location.x = Math.random() * 510;
+	mine2Location.y = Math.random() * 470;
+}
+function reset5() { //Mine 3 moves
+	mine3Location.x = Math.random() * 510;
+	mine3Location.y = Math.random() * 470;
+}
+var currentScore = 0;
+
+function scorePoint() {
+	var highScore = 0;
+	currentScore += 1;
+	if (currentScore > highScore) {
+		highScore = currentScore;
+	}
+	console.log(currentScore);
+	return currentScore;
+}
+function minusPoint() {
+	currentScore -= 1;
+	console.log(currentScore);
+	return currentScore;
+}
+
+// console.log(heroLocation);
+
+// Make the goblin reappear after the hero captures him
+
+function draw() {
+	update();
+	// This is where JS draws our stuff
+	context.drawImage(bgImage, 0, 0);
+	context.drawImage(hero, heroLocation.x, heroLocation.y);
+	context.drawImage(goblin, goblinLocation.x, goblinLocation.y);
+	context.drawImage(goblin2, goblin2Location.x, goblin2Location.y);
+	context.drawImage(mine, mineLocation.x, mineLocation.y);
+	context.drawImage(mine2, mine2Location.x, mine2Location.y);
+	context.drawImage(mine3, mine3Location.x, mine3Location.y);
+	document.getElementById("currentScore").innerHTML = currentScore;
+	document.getElementById("highScore").innerHTML = currentScore;
+	requestAnimationFrame(draw);
+}
+draw();
+
+</script>
+
+</body>
+</html>
